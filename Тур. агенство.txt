@@ -1,0 +1,102 @@
+-- Создание базы данных
+CREATE DATABASE TourismAgency;
+GO
+
+USE TourismAgency;
+GO
+
+-- Создание таблицы "Отели"
+CREATE TABLE Hotels (
+    HotelID int PRIMARY KEY,
+    HotelName varchar(50),
+    City varchar(50),
+    Rating int
+);
+GO
+
+-- Создание таблицы "Туристы"
+CREATE TABLE Tourists (
+    TouristID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50),
+    Email varchar(50)
+);
+GO
+
+-- Создание таблицы "Страны"
+CREATE TABLE Countries (
+    CountryID int PRIMARY KEY,
+    CountryName varchar(50)
+);
+GO
+
+-- Создание таблицы "Туры"
+CREATE TABLE Tours (
+    TourID int PRIMARY KEY,
+    TourName varchar(50),
+    CountryID int,
+    HotelID int,
+    FOREIGN KEY (CountryID) REFERENCES Countries(CountryID),
+    FOREIGN KEY (HotelID) REFERENCES Hotels(HotelID)
+);
+GO
+
+-- Создание таблицы "Бронирования"
+CREATE TABLE Bookings (
+    BookingID int PRIMARY KEY,
+    TouristID int,
+    TourID int,
+    BookingDate date,
+    FOREIGN KEY (TouristID) REFERENCES Tourists(TouristID),
+    FOREIGN KEY (TourID) REFERENCES Tours(TourID)
+);
+GO
+
+-- Создание таблицы "Экскурсии"
+CREATE TABLE Excursions (
+    ExcursionID int PRIMARY KEY,
+    ExcursionName varchar(50),
+    Location varchar(50),
+    TourID int,
+    FOREIGN KEY (TourID) REFERENCES Tours(TourID)
+);
+GO
+
+-- Создание таблицы "Оценки"
+CREATE TABLE Ratings (
+    RatingID int PRIMARY KEY,
+    TouristID int,
+    TourID int,
+    Rating int,
+    FOREIGN KEY (TouristID) REFERENCES Tourists(TouristID),
+    FOREIGN KEY (TourID) REFERENCES Tours(TourID)
+);
+GO
+
+-- Создание таблицы "Агентства"
+CREATE TABLE Agencies (
+    AgencyID int PRIMARY KEY,
+    AgencyName varchar(50),
+    Location varchar(50)
+);
+GO
+
+-- Создание таблицы "Сотрудники"
+CREATE TABLE Employees (
+    EmployeeID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50),
+    AgencyID int,
+    FOREIGN KEY (AgencyID) REFERENCES Agencies(AgencyID)
+);
+GO
+
+-- Создание таблицы "Платежи"
+CREATE TABLE Payments (
+    PaymentID int PRIMARY KEY,
+    BookingID int,
+    Amount decimal(10, 2),
+    PaymentDate date,
+    FOREIGN KEY (BookingID) REFERENCES Bookings(BookingID)
+);
+GO

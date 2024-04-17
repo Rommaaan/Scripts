@@ -1,0 +1,89 @@
+-- Создание базы данных
+CREATE DATABASE AirportDB;
+GO
+
+USE AirportDB;
+GO
+
+-- Создание таблицы "Авиакомпании"
+CREATE TABLE Airlines (
+    AirlineID int PRIMARY KEY,
+    AirlineName varchar(50)
+);
+GO
+
+-- Создание таблицы "Рейсы"
+CREATE TABLE Flights (
+    FlightID int PRIMARY KEY,
+    AirlineID int,
+    DepartureAirport varchar(50),
+    DestinationAirport varchar(50),
+    DepartureTime datetime,
+    ArrivalTime datetime,
+    FOREIGN KEY (AirlineID) REFERENCES Airlines(AirlineID)
+);
+GO
+
+-- Создание таблицы "Самолеты"
+CREATE TABLE Planes (
+    PlaneID int PRIMARY KEY,
+    PlaneModel varchar(50),
+    AirlineID int,
+    Capacity int,
+    FOREIGN KEY (AirlineID) REFERENCES Airlines(AirlineID)
+);
+GO
+
+-- Создание таблицы "Пассажиры"
+CREATE TABLE Passengers (
+    PassengerID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50),
+    PassportNumber varchar(20)
+);
+GO
+
+-- Создание таблицы "Места на рейсе"
+CREATE TABLE Seats (
+    SeatID int PRIMARY KEY,
+    FlightID int,
+    PassengerID int,
+    SeatNumber varchar(5),
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
+    FOREIGN KEY (PassengerID) REFERENCES Passengers(PassengerID)
+);
+GO
+
+-- Создание таблицы "Билеты"
+CREATE TABLE Tickets (
+    TicketID int PRIMARY KEY,
+    FlightID int,
+    PassengerID int,
+    SeatID int,
+    TicketPrice decimal(10, 2),
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
+    FOREIGN KEY (PassengerID) REFERENCES Passengers(PassengerID),
+    FOREIGN KEY (SeatID) REFERENCES Seats(SeatID)
+);
+GO
+
+-- Создание таблицы "Багаж"
+CREATE TABLE Luggage (
+    LuggageID int PRIMARY KEY,
+    PassengerID int,
+    Weight decimal(5, 2),
+    FOREIGN KEY (PassengerID) REFERENCES Passengers(PassengerID)
+);
+GO
+
+-- Создание таблицы "Посадочные ведомости"
+CREATE TABLE BoardingPasses (
+    BoardingPassID int PRIMARY KEY,
+    FlightID int,
+    PassengerID int,
+    SeatID int,
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
+    FOREIGN KEY (PassengerID) REFERENCES Passengers(PassengerID),
+    FOREIGN KEY (SeatID) REFERENCES Seats(SeatID)
+);
+GO

@@ -1,0 +1,83 @@
+-- Создание базы данных
+CREATE DATABASE ToyStore;
+GO
+
+USE ToyStore;
+GO
+
+-- Создание таблицы "Категории игрушек"
+CREATE TABLE ToyCategories (
+    CategoryID int PRIMARY KEY,
+    CategoryName varchar(50)
+);
+GO
+
+-- Создание таблицы "Игрушки"
+CREATE TABLE Toys (
+    ToyID int PRIMARY KEY,
+    CategoryID int,
+    ToyName varchar(50),
+    AgeRestriction int,
+    Price decimal(10, 2),
+    FOREIGN KEY (CategoryID) REFERENCES ToyCategories(CategoryID)
+);
+GO
+
+-- Создание таблицы "Производители игрушек"
+CREATE TABLE ToyManufacturers (
+    ManufacturerID int PRIMARY KEY,
+    ManufacturerName varchar(50),
+    Country varchar(50)
+);
+GO
+
+-- Создание таблицы "Заказы"
+CREATE TABLE Orders (
+    OrderID int PRIMARY KEY,
+    CustomerID int,
+    OrderDate date,
+    TotalAmount decimal(10, 2)
+);
+GO
+
+-- Создание таблицы "Клиенты"
+CREATE TABLE Customers (
+    CustomerID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50),
+    Phone varchar(15),
+    Email varchar(50)
+);
+GO
+
+-- Создание таблицы "Сотрудники"
+CREATE TABLE Employees (
+    EmployeeID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50),
+    Position varchar(50),
+    Salary decimal(10, 2)
+);
+GO
+
+-- Создание таблицы "Склад"
+CREATE TABLE Warehouse (
+    ItemID int PRIMARY KEY,
+    ToyID int,
+    Quantity int,
+    FOREIGN KEY (ToyID) REFERENCES Toys(ToyID)
+);
+GO
+
+-- Создание таблицы "Отзывы"
+CREATE TABLE Reviews (
+    ReviewID int PRIMARY KEY,
+    ToyID int,
+    CustomerID int,
+    ReviewDate date,
+    Rating int,
+    Comments varchar(max),
+    FOREIGN KEY (ToyID) REFERENCES Toys(ToyID),
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+GO

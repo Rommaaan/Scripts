@@ -1,0 +1,86 @@
+-- Создание базы данных
+CREATE DATABASE RestaurantDB;
+GO
+
+USE RestaurantDB;
+GO
+
+-- Создание таблицы "Меню"
+CREATE TABLE MenuItems (
+    MenuItemID int PRIMARY KEY,
+    ItemName varchar(50),
+    Category varchar(50),
+    Price decimal(10, 2)
+);
+GO
+
+-- Создание таблицы "Заказы"
+CREATE TABLE Orders (
+    OrderID int PRIMARY KEY,
+    CustomerID int,
+    OrderDate datetime,
+    TotalAmount decimal(10, 2),
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+GO
+
+-- Создание таблицы "Клиенты"
+CREATE TABLE Customers (
+    CustomerID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50),
+    Phone varchar(15),
+    Email varchar(50)
+);
+GO
+
+-- Создание таблицы "Позиции заказа"
+CREATE TABLE OrderItems (
+    OrderItemID int PRIMARY KEY,
+    OrderID int,
+    MenuItemID int,
+    Quantity int,
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (MenuItemID) REFERENCES MenuItems(MenuItemID)
+);
+GO
+
+-- Создание таблицы "Столики"
+CREATE TABLE Tables (
+    TableID int PRIMARY KEY,
+    TableNumber int,
+    Capacity int
+);
+GO
+
+-- Создание таблицы "Заказы на столики"
+CREATE TABLE TableOrders (
+    TableOrderID int PRIMARY KEY,
+    TableID int,
+    OrderID int,
+    ReservationTime datetime,
+    FOREIGN KEY (TableID) REFERENCES Tables(TableID),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+);
+GO
+
+-- Создание таблицы "Сотрудники"
+CREATE TABLE Employees (
+    EmployeeID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50),
+    Position varchar(50),
+    Salary decimal(10, 2)
+);
+GO
+
+-- Создание таблицы "Рабочее время"
+CREATE TABLE WorkSchedule (
+    ScheduleID int PRIMARY KEY,
+    EmployeeID int,
+    WorkDate date,
+    StartTime time,
+    EndTime time,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+);
+GO

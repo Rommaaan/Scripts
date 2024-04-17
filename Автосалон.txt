@@ -1,0 +1,88 @@
+-- Создание базы данных
+CREATE DATABASE CarDealership;
+GO
+
+USE CarDealership;
+GO
+
+-- Создание таблицы "Производители"
+CREATE TABLE Manufacturers (
+    ManufacturerID int PRIMARY KEY,
+    ManufacturerName varchar(50),
+    Country varchar(50)
+);
+GO
+
+-- Создание таблицы "Модели автомобилей"
+CREATE TABLE CarModels (
+    ModelID int PRIMARY KEY,
+    ManufacturerID int,
+    ModelName varchar(50),
+    YearOfManufacture int,
+    FOREIGN KEY (ManufacturerID) REFERENCES Manufacturers(ManufacturerID)
+);
+GO
+
+-- Создание таблицы "Автомобили"
+CREATE TABLE Cars (
+    CarID int PRIMARY KEY,
+    ModelID int,
+    Color varchar(20),
+    Price decimal(10, 2),
+    FOREIGN KEY (ModelID) REFERENCES CarModels(ModelID)
+);
+GO
+
+-- Создание таблицы "Сотрудники"
+CREATE TABLE Employees (
+    EmployeeID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50),
+    Position varchar(50),
+    Salary decimal(10, 2)
+);
+GO
+
+-- Создание таблицы "Клиенты"
+CREATE TABLE Customers (
+    CustomerID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50),
+    Phone varchar(15),
+    Email varchar(50)
+);
+GO
+
+-- Создание таблицы "Сделки"
+CREATE TABLE Deals (
+    DealID int PRIMARY KEY,
+    CarID int,
+    EmployeeID int,
+    CustomerID int,
+    DealDate date,
+    FOREIGN KEY (CarID) REFERENCES Cars(CarID),
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+GO
+
+-- Создание таблицы "Сервисное обслуживание"
+CREATE TABLE ServiceMaintenance (
+    MaintenanceID int PRIMARY KEY,
+    CarID int,
+    MaintenanceDate date,
+    Description varchar(max),
+    FOREIGN KEY (CarID) REFERENCES Cars(CarID)
+);
+GO
+
+-- Создание таблицы "Отзывы"
+CREATE TABLE Reviews (
+    ReviewID int PRIMARY KEY,
+    CustomerID int,
+    ReviewDate date,
+    Rating int,
+    Comments varchar(max),
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+GO

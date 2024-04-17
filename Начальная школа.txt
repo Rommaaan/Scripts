@@ -1,0 +1,92 @@
+-- Создание базы данных
+CREATE DATABASE PrimarySchool;
+GO
+
+USE PrimarySchool;
+GO
+
+-- Создание таблицы "Ученики"
+CREATE TABLE Students (
+    StudentID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50),
+    Grade int,
+    Class varchar(5)
+);
+GO
+
+-- Создание таблицы "Учителя"
+CREATE TABLE Teachers (
+    TeacherID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50),
+    Subject varchar(50)
+);
+GO
+
+-- Создание таблицы "Предметы"
+CREATE TABLE Subjects (
+    SubjectID int PRIMARY KEY,
+    SubjectName varchar(50)
+);
+GO
+
+-- Создание таблицы "Оценки"
+CREATE TABLE Grades (
+    GradeID int PRIMARY KEY,
+    StudentID int,
+    SubjectID int,
+    Grade int,
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID)
+);
+GO
+
+-- Создание таблицы "Расписание"
+CREATE TABLE Schedule (
+    ScheduleID int PRIMARY KEY,
+    DayOfWeek varchar(10),
+    TimeStart time,
+    TimeEnd time,
+    TeacherID int,
+    SubjectID int,
+    Class varchar(5),
+    FOREIGN KEY (TeacherID) REFERENCES Teachers(TeacherID),
+    FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID)
+);
+GO
+
+-- Создание таблицы "Классы"
+CREATE TABLE Classes (
+    ClassID int PRIMARY KEY,
+    ClassName varchar(5)
+);
+GO
+
+-- Создание таблицы "Уроки"
+CREATE TABLE Lessons (
+    LessonID int PRIMARY KEY,
+    ScheduleID int,
+    GradeID int,
+    FOREIGN KEY (ScheduleID) REFERENCES Schedule(ScheduleID),
+    FOREIGN KEY (GradeID) REFERENCES Grades(GradeID)
+);
+GO
+
+-- Создание таблицы "Родители"
+CREATE TABLE Parents (
+    ParentID int PRIMARY KEY,
+    FirstName varchar(50),
+    LastName varchar(50)
+);
+GO
+
+-- Создание таблицы "Отношения"
+CREATE TABLE Relationships (
+    RelationshipID int PRIMARY KEY,
+    ParentID int,
+    StudentID int,
+    FOREIGN KEY (ParentID) REFERENCES Parents(ParentID),
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID)
+);
+GO
