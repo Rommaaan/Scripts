@@ -202,5 +202,122 @@ LEFT JOIN table2 ON table1.column_id = table2.column_id;
 
 50. Для импорта данных из таблиц Excel в MS SQL можно использовать различные методы, такие как использование встроенных средств импорта данных в SQL Server Management Studio, написание скриптов на Transact-SQL для импорта данных, или использование инструментов ETL (Extract, Transform, Load).
 
+Практическое задание 
+
+Написать запрос к учебной базе данных «Отель». Необходимо вывести информацию о номерах, с указанием типа номера.
+
+SELECT Number, IDHotel
+FROM Room
+-----------------------------------------
+Написать запрос к учебной базе данных «Отель». Необходимо вывести информацию о сотрудниках, с указанием ФИО в одном столбце и их должности.
+
+SELECT CONCAT(FirstName, ' ', LastName) AS Patronymic, PostName, BirthdayDate
+FROM Employer, EmployerPost
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Необходимо вывести информацию о должностях, зарплата которых от 30000 до 70000.
+
+SELECT *
+FROM EmployerPost
+WHERE Salary BETWEEN 30000 AND 70000;
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Необходимо вывести информацию о суммарной стоимости всех номеров в отеле.
+
+SELECT SUM(Price)
+FROM TipeRoom;
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Необходимо вывести информацию о средней стоимости всех номеров в отеле.
+
+SELECT AVG(Price)
+FROM TipeRoom;
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Необходимо вывести информацию о номере, с указанием количества оборудования в нем.
+
+SELECT StatusRoom, COUNT(IDStatus) AS Equipment
+FROM Equipment, StatusRoom
+GROUP BY StatusRoom;
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Необходимо вывести информацию о сотрудниках женского пола, с указанием должности.
+
+SELECT Employer.LastName, Employer.FirstName, Employer.BirthdayDate, EmployerPost.PostName
+FROM Employer, EmployerPost
+WHERE Employer.Gender = '2';
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Необходимо вывести информацию о комнатах типа «Делюкс».
+
+SELECT TipeRoom, Number, Price
+FROM Room
+JOIN TipeRoom ON Room.IDTipeRoom = TipeRoom.IDTipeRoom
+WHERE TipeRoom LIKE 'Делюкс'
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Необходимо вывести информацию о комнатах, стоимость которых превышает 2800 рублей. 
+
+SELECT Number, Price
+FROM Room
+JOIN TipeRoom ON Room.IDTipeRoom = TipeRoom.IDTipeRoom
+WHERE Price > 2800
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Найдите самые дорогие номера отеля Дельта. Вывести номер и тип комнаты.
+
+SELECT Title, Number, Price, TipeRoom
+FROM Hotel
+JOIN Room ON Hotel.IDHotel = Room.IDHotel
+JOIN TipeRoom ON Room.IDTipeRoom = TipeRoom.IDTipeRoom
+WHERE TITLE LIKE'Дельта' AND Price = (SELECT MAX(Price) FROM TipeRoom)
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Вывести названия отелей и количество номеров в каждом.
+
+SELECT COUNT(*) AS [COUNT], Title
+FROM Hotel
+JOIN Room ON Hotel.IDHotel = Room.IDHotel
+GROUP BY Title;
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Найдите самого молодого сотрудника среди мужчин. Вывести ФИО, возраст и пол.
+
+SELECT TOP 1 FirstName, LastName, Patronymic, BirthdayDate, GenderName
+FROM Employer
+JOIN Gender ON Employer.Gender = Employer.Gender
+ORDER BY BirthdayDate DESC 
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Найдите свободные комнаты стоимостью до 3000 рублей. Вывести номер комнаты, стоимость и статус.
+
+SELECT Number, Cost, StatusRoom
+FROM Room
+JOIN StatusRoom ON Room.IDStatus = StatusRoom.IDStatus
+JOIN Accommodation ON Room.IDRoom = Accommodation.IDRoom
+WHERE COST < 3000 AND StatusRoom LIKE 'Свободна'
+
+-----------------------------------------
+
+Написать запрос к учебной базе данных «Отель». Найдите услугу, заказываемую чаще остальных. Вывести Название услуги, количество оказаний.
+
+SELECT [Service], COUNT(*) AS Quantity
+FROM Service
+JOIN SerGuest ON Service.IDServices = SerGuest.IDService
+JOIN Guest ON SerGuest.IDGuest = Guest.IDGuest
+JOIN Accommodation ON Guest.IDGuest = Accommodation.IDGuest
+GROUP BY [Service]
+ORDER BY Quantity DESC
 
 
